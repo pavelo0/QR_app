@@ -1,39 +1,39 @@
-import { useRef, useState } from 'react';
-import { QrCodeGenerator } from './components/QrCodeGenerator';
-import { QrCodeScanner } from './components/QrCodeScanner';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { NavMenu } from './components/NavMenu';
+import { QrCodeGeneratorPage } from './pages/QrCodeGeneratorPage';
+import { QrCodeScannerPage } from './pages/QrCodeScannerPage';
+import { QrGenerateHistoryPage } from './pages/QrGenerateHistory';
+import { QrScanHistory } from './pages/QrScanHistory';
+import WelcomePage from './pages/WelcomePage';
 
 export default function App() {
-    const qrValueRef = useRef(null);
-    const [qrValue, setQrValue] = useState(null);
-    const [isActive, setIsActive] = useState(false);
-
-    const activeHandleClick = () => {
-        setIsActive((prev) => !prev);
-    };
-
     return (
         <>
-            <div className="flex flex-col items-center min-w-[550px] min-h-[500px] bg-blue-600 text-white font-semibold p-8 rounded-3xl">
-                <h1 className="text-4xl mb-8">QR Code Generator & Scanner</h1>
-
-                <div className="flex w-full gap-7 ">
-                    <button
-                        onClick={activeHandleClick}
-                        className="cursor-pointer bg-w-400 bg-blue-900 py-3 w-full flex-1/2 rounded-2xl hover:bg-blue-950 transition-all duration-300"
-                    >
-                        <h2>Scan QR</h2>
-                    </button>
-
-                    <button
-                        onClick={activeHandleClick}
-                        className="cursor-pointer bg-blue-900 py-3 w-full flex-1/2 rounded-2xl hover:bg-blue-950 transition-all duration-300"
-                    >
-                        <h2>Generate QR</h2>
-                    </button>
+            <header className="w-full h-20 border flex items-center px-4 transition-all duration-500">
+                <div className="max-w-[1350px] w-full mx-auto flex justify-between items-center relative">
+                    <div className="absolute left-0">
+                        <Link to="/Mono_QR/Welcome" className="text-4xl font-bold">
+                            <span className="bg-black px-2 py-1 text-white rounded-2xl font-semibold">
+                                Mono
+                            </span>{' '}
+                            QR
+                        </Link>
+                    </div>
+                    <NavMenu />
                 </div>
+            </header>
 
-                {isActive ? <QrCodeGenerator /> : <QrCodeScanner />}
-            </div>
+            <Routes>
+                <Route path="/" element={<Navigate to="/Mono_QR/Welcome" />} />
+                <Route path="/Mono_QR/Welcome" element={<WelcomePage />} />
+                <Route path="/Mono_QR/Generate_QR" element={<QrCodeGeneratorPage />} />
+                <Route path="/Mono_QR/Scan_QR" element={<QrCodeScannerPage />} />
+                <Route
+                    path="/Mono_QR/Generate_History"
+                    element={<QrGenerateHistoryPage />}
+                />
+                <Route path="/Mono_QR/Scan_History" element={<QrScanHistory />} />
+            </Routes>
         </>
     );
 }
